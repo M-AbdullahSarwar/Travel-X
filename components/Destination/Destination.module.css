@@ -1,0 +1,73 @@
+.heading {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--heading-color); /* Theme color for heading */
+  }
+  
+  .bookList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    padding: 20px;
+    background-color: var(--booklist-bg);
+  }
+  
+  .bookCard {
+    background-color: var(--card-bg); /* Theme-dependent background color */
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Stronger shadow effect */
+    width: 320px;
+    padding: 30px;
+    margin: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .bookCard:hover {
+    transform: scale(1.02); /* Slight scaling effect */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+  }
+  
+  .bookTitle {
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--title-color);
+    margin-bottom: 12px;
+  }
+  
+  .bookAuthor,
+  .bookGenre {
+    font-size: 15px;
+    color: var(--text-color);
+    margin-bottom: 6px;
+  }
+  
+  .bookDescription {
+    font-size: 14px;
+    color: var(--description-color);
+    margin-bottom: 12px;
+    line-height: 1.4;
+  }
+  
+  .bookPrice {
+    font-size: 17px;
+    font-weight: bold;
+    color: var(--price-color);
+    margin-bottom: 8px;
+  }
+  
+  .bookRating {
+    font-size: 15px;
+    color: var(--rating-color);
+    font-weight: 500;
+  }
+  
+  .book-details {
+    margin-bottom: 10px;
+  }
+  

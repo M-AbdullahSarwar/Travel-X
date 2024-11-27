@@ -1,0 +1,28 @@
+/* General Container Styles */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+    min-height: 100vh;
+  }
+
+/* destination List */
+.destinationList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+    background-color: var(--destinationlist-bg);
+    flex-grow: 1; /* This allows the destination list to take up the remaining space */
+  }
+
+  /* Header */
+  .header {
+    font-size: 32px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+  }
