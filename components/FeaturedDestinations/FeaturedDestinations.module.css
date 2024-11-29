@@ -1,0 +1,19 @@
+/* components/FeaturedDestinations/FeaturedDestinations.module.css */
+
+.featuredContainer {
+    text-align: center;
+    margin: 40px 0;
+  }
+  
+  .mainHeading{
+    text-align: center;
+    margin-bottom: 2rem;
+    color: white;
+  }
+  
+  .grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }

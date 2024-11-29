@@ -1,0 +1,34 @@
+/* pages/wishlist/wishlist.module.css */
+
+.container {
+    text-align: center;
+    margin: 20px;
+  }
+  
+  .grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .removeButton {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+  
+  .removeButton:hover {
+    background-color: #c82333;
+  }
+  .loadingContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    text-align: center;
+  }

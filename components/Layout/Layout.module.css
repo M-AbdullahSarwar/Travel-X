@@ -1,0 +1,44 @@
+/* components/Layout/Layout.module.css */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #0070f3;
+    padding: 1rem 2rem;
+    color: white;
+  }
+  
+  .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .navLinks {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+  }
+  
+  .navLinks li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s;
+  }
+  
+  .navLinks li a:hover {
+    color: #e0e0e0;
+  }
+  
+  .content {
+    flex: 1;
+    padding: 2rem;
+  }
+  

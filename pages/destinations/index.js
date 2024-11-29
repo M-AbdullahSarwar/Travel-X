@@ -1,41 +1,53 @@
+import React, { useState } from "react";
+import DestinationCard from '@/components/Destination/destination';
+import FilterBar from "@/components/FilterBar/FilterBar";
+import styles from "../home.module.css";
+import {getAllDestinations} from "@/helper/api-util";
 
-import styles from '../Home.module.css'
-import Destination from '@/components/Destination/destination';
+export default function DestinationsPage (props){
+  
+    const [filteredDestinations, setFilteredDestinations] = useState(props.destinations);
 
-export default function AllDestinationsPage({destinations}) {
-    return(
-        <div className={styles.container}>
-            <header className={styles.header}>All Destinations</header>
-
-            {/* Add Filters Here */}
-
-            <div className={styles.destinationList}>
-            {destinations.map((dest) =>{
-                return (
-                    <Destination destination={dest} />
-                    // <p>{dest.name}</p>
-                );
-            })}
-            </div>
+    const handleFilter = ({ searchTerm, priceRange, location, minRating }) => {
+      const filtered = props.destinations.filter((destination) => {
+        const matchesSearchTerm = destination.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          destination.category.toLowerCase().includes(searchTerm.toLowerCase());
+        
+        const matchesPrice = priceRange ? destination.price <= parseInt(priceRange) : true;
+        const matchesLocation = location ? destination.location.toLowerCase().includes(location.toLowerCase()) : true;
+        const matchesRating = minRating ? destination.rating >= parseFloat(minRating) : true;
+  
+        return matchesSearchTerm && matchesPrice && matchesLocation && matchesRating;
+      });
+     
+        setFilteredDestinations(filtered);
+    };
+  
+    return (
+      <div className={styles.container}>
+        <h1 className={styles.mainHeadings}>All Destinations</h1>
+        <FilterBar onFilter={handleFilter} />
+        <div className={styles.grid}>
+          {filteredDestinations.length > 0 ? (
+            filteredDestinations.map((destination) => (
+              <DestinationCard key={destination.id} destination={destination} />
+            ))
+          ) : (
+            <p>No destinations match your criteria.</p>
+          )}
         </div>
-    )
-}
+      </div>
+    );
+};
+export async function getServerSideProps() {
+    const destinations = await getAllDestinations()
 
-export async function getStaticProps() {
-    // const { getAllDestinations } = require('@/helper/api-util');         // see how to do this
-    // const destinations = await getAllDestinations()
-
-    const response = await fetch('http://localhost:3000/api/destinations')
-    const data = await response.json()
-
-
-    if(!data.destinations || data.destinations.length === 0)
+    if(!destinations || destinations.length === 0)
         return { notFound: true}
 
     return{
         props: {
-            destinations: data.destinations
-        },
-        revalidate: 100
+            destinations: destinations
+        }
     }
 }
