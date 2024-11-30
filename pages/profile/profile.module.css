@@ -1,0 +1,102 @@
+
+   .pageContainer {
+    background-color: #000000;
+    min-height: 100vh;
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    min-height: 80vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+  }
+  
+  .loadingContainer {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #000000;
+  }
+  
+  .loadingText {
+    color: #ffffff;
+    font-size: 1.2rem;
+  }
+  
+  .profileCard {
+    /* background: rgba(255, 255, 255, 0.05); */
+    background-color: black;
+    padding: 2rem;
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    /* border: 1px solid rgba(255, 255, 255, 0.1); */
+    border: 1px solid #ccc;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    color: #ffffff;
+    text-align: center;
+  }
+  
+  .infoSection {
+    margin-bottom: 2rem;
+  }
+  
+  .infoItem {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 1.5rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+  }
+  
+  .label {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  .value {
+    font-size: 1.125rem;
+    color: #ffffff;
+  }
+  
+  .signOutButton {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #FF9800;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+    font-weight: 500;
+  }
+  
+  .signOutButton:hover {
+    background-color: #F57C00;
+    transform: translateY(-1px);
+  }
+  
+  .signOutButton:focus {
+    outline: 2px solid #FF9800;
+    outline-offset: 2px;
+  }
+  
+  .signOutButton:active {
+    transform: translateY(0);
+  }
+  
+  

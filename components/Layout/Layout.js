@@ -1,9 +1,15 @@
-// components/Layout/Layout.js
-
 import Link from "next/link";
+import { useSession, signOut } from "next-auth/react";
 import styles from "./Layout.module.css";
 
 const Layout = ({ children }) => {
+  const { data: session, status } = useSession();
+
+  const handleSignOut = (e) => {
+    e.preventDefault();
+    signOut({ callbackUrl: '/' });
+  };
+
   return (
     <div className={styles.container}>
       <nav className={styles.navbar}>
@@ -13,7 +19,14 @@ const Layout = ({ children }) => {
           <li><Link href="/destinations">Destinations</Link></li>
           <li><Link href="/wishlist">Wishlist</Link></li>
           <li><Link href="/history">History</Link></li>
-          <li><Link href="/auth">Sign In</Link></li>
+          {status === 'authenticated' ? (
+            <>
+              <li><Link href="/profile">Profile</Link></li>
+              <li><a href="#" onClick={handleSignOut}>Sign Out</a></li>
+            </>
+          ) : (
+            <li><Link href="/auth/signin">Sign In</Link></li>
+          )}
         </ul>
       </nav>
       <main className={styles.content}>
@@ -24,3 +37,4 @@ const Layout = ({ children }) => {
 };
 
 export default Layout;
+
