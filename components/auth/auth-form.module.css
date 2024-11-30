@@ -1,0 +1,48 @@
+.container {
+    max-width: 400px;
+    margin: auto;
+    padding: 2rem;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+.input {
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.button {
+    background-color: #0070f3;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #005bb5;
+}
+
+
+.toggleButton {
+    margin-top: 15px;
+    background-color: #0070f3;
+    color: #f0f0f0;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.toggleButton:hover {
+    background-color:#005bb5;
+}

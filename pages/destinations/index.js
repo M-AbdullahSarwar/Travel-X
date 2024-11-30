@@ -39,15 +39,28 @@ export default function DestinationsPage (props){
       </div>
     );
 };
-export async function getServerSideProps() {
-    const destinations = await getAllDestinations()
+// export async function getServerSideProps() {
+//     const destinations =  await getAllDestinations()
 
-    if(!destinations || destinations.length === 0)
-        return { notFound: true}
+//     if(!destinations || destinations.length === 0)
+//         return { notFound: true}
 
-    return{
-        props: {
-            destinations: destinations
-        }
-    }
+//     return{
+//         props: {
+//             destinations: destinations
+//         }
+//     }
+// }
+
+export async function getStaticProps() {
+  const destinations =  await getAllDestinations()
+
+  if(!destinations || destinations.length === 0)
+      return { notFound: true}
+
+  return{
+      props: {
+          destinations: destinations
+      }
+  }
 }
