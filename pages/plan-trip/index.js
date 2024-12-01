@@ -1,8 +1,11 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styles from "./planTrip.module.css";
+import { useSession } from "next-auth/react";
 
 export default function PlanTripPage() {
+  const { data: session } = useSession();
+
     const router = useRouter();
     const { destination } = router.query;
     const [tripDetails, setTripDetails] = useState({
@@ -37,7 +40,7 @@ export default function PlanTripPage() {
         fetch('/api/booking',{
             method:'POST',
             body:JSON.stringify({
-                tripdata:tripinfo
+                tripdata:{...tripinfo,userId: session?.user?.id}
             }),
             headers:{
                 'Content-Type':'application/json'

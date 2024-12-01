@@ -1,42 +1,72 @@
 import { useState } from "react";
-import styles from "./Destination.module.css"; // We'll create this CSS module next
+import { useSession } from "next-auth/react";
+import styles from "./Destination.module.css";
 import { useRouter } from "next/router";
 
 const DestinationCard = ({ destination }) => {
+    const { data: session } = useSession();
     const { name, location, category, description, activities, price, rating } = destination;
-
-    // Convert activities to an array if it's not already one
     const activitiesList = Array.isArray(activities) ? activities : (activities ? [activities] : []);
     const router = useRouter();
+    const [wishlistAdded, setWishlistAdded] = useState(false);
+
     const handleCardClick = () => {
         router.push(`/destinations/${destination.id}`);
     };
 
-    const [wishlistAdded, setWishlistAdded] = useState(false);
-
     const btnhandler1 = (e) => {
-        e.stopPropagation(); // Prevent card click
+        e.stopPropagation();
         router.push({
             pathname: "/plan-trip",
             query: { destination: JSON.stringify(destination) },
         });
     };
 
-    const btnhandler2 = (e) => {
-        e.stopPropagation(); 
-        console.log(destination);
+    const btnhandler2 = async (e) => {
+        e.stopPropagation();
         
-        fetch('/api/wishlist', {
-            method: 'POST',
-            body: JSON.stringify({
-                wishlistdata: destination
-            }),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(res => res.json()).then(data => setWishlistAdded(data.value));
+        if (!session) {
+            router.push('/auth/signin');
+            return;
+        }
+        const wishlistitem={
+            id:destination.id,
+            name: destination.name,
+            location: destination.location,
+            category: destination.category,
+            description: destination.description,
+            activities: destination.activities,
+            price: destination.price,
+            rating: destination.rating,
+           // userId: session.user.id,
+        }
 
-        alert("Added to Wishlist!");
+        try {
+            const response = await fetch('/api/wishlist', {
+                method: 'POST',
+                body: JSON.stringify({
+                    //wishlistdata: {...destination,userId: session?.user?.id}
+                    wishlistdata: wishlistitem
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || 'Failed to add to wishlist');
+            }
+
+            setWishlistAdded(data.value);
+            alert(data.message);
+        } catch (error) {
+            alert(error.message);
+            if (error.message.includes('sign in')) {
+                router.push('/auth/signin');
+            }
+        }
     };
 
     return (
@@ -58,12 +88,14 @@ const DestinationCard = ({ destination }) => {
             <button 
                 className={styles.wishlistButton} 
                 onClick={btnhandler2} 
-                disabled={wishlistAdded} // Disable the button if wishlistAdded is true
             >
-                {wishlistAdded ? 'Added to Wishlist' : 'Add to Wishlist'}
+                Add to Wishlist
             </button>
         </div>
     );
 };
 
 export default DestinationCard;
+
+
+

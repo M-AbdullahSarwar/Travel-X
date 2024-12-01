@@ -2,11 +2,14 @@ import React, { useEffect, useState } from "react";
 import styles from "./DestinationDetail.module.css";
 import { getAllDestinations } from "@/helper/api-util";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 
 const ACCESS_KEY = 'RMWbFcJe7fN7Nw_7H62xvqbt6KctKrBAeQSbRCAlJhk'; // Replace with your Unsplash API access key
 
 export default function DestinationDetail(props){
+    const { data: session } = useSession();
+
     if (!props.destinationsdetail) {
     return <p>Loading</p>;
     }
@@ -34,22 +37,53 @@ export default function DestinationDetail(props){
       });
   };
 
-  const btnhandler2 = (e) => {
-      e.stopPropagation(); 
-      console.log(props.destinationsdetail);
-      
-      fetch('/api/wishlist', {
-          method: 'POST',
-          body: JSON.stringify({
-              wishlistdata: props.destinationsdetail
-          }),
-          headers: {
-              'Content-Type': 'application/json'
-          }
-      }).then(res => res.json()).then(data => setWishlistAdded(data.value));
 
-      alert("Added to Wishlist!");
-  };
+   const btnhandler2 = async (e) => {
+        e.stopPropagation();
+        
+        if (!session) {
+            router.push('/auth/signin');
+            return;
+        }
+        const wishlistitem={
+            id:props.destinationsdetail.id,
+            name: props.destinationsdetail.name,
+            location: props.destinationsdetail.location,
+            category: props.destinationsdetail.category,
+            description: props.destinationsdetail.description,
+            activities: props.destinationsdetail.activities,
+            price: props.destinationsdetail.price,
+            rating: props.destinationsdetail.rating,
+           // userId: session.user.id,
+        }
+
+        try {
+            const response = await fetch('/api/wishlist', {
+                method: 'POST',
+                body: JSON.stringify({
+                    //wishlistdata: {...destination,userId: session?.user?.id}
+                    wishlistdata: wishlistitem
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || 'Failed to add to wishlist');
+            }
+
+            setWishlistAdded(data.value);
+            alert(data.message);
+        } catch (error) {
+            alert(error.message);
+            if (error.message.includes('sign in')) {
+                router.push('/auth/signin');
+            }
+        }
+    };
 
 
   return (
@@ -77,9 +111,8 @@ export default function DestinationDetail(props){
             <button 
                 className={styles.wishlistButton} 
                 onClick={btnhandler2} 
-                disabled={wishlistAdded} // Disable the button if wishlistAdded is true
             >
-                {wishlistAdded ? 'Added to Wishlist' : 'Add to Wishlist'}
+                Add to Wishlist
             </button>
       </div>
     </div>

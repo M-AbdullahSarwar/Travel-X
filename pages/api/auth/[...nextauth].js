@@ -2,16 +2,16 @@ import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { MongoClient } from "mongodb"
 
-export default NextAuth({
+export const authOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "text", placeholder: "jsmith@example.com" },
+        email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
-        const client = await MongoClient.connect(process.env.MONGODB_URI);
+        const client = await MongoClient.connect(process.env.MONGODB_URI || "mongodb+srv://admin:admin123@testing.dc4lc.mongodb.net/travel_x?retryWrites=true&w=majority&appName=Testing");
         const db = client.db();
         const usersCollection = db.collection('users');
 
@@ -27,13 +27,10 @@ export default NextAuth({
         }
 
         client.close();
-        return { id: user._id, email: user.email };
+        return { id: user._id.toString(), email: user.email };
       }
     })
   ],
-  pages: {
-    signIn: '/auth/signin',
-  },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
@@ -42,13 +39,20 @@ export default NextAuth({
       return token;
     },
     async session({ session, token }) {
-      session.user.id = token.id;
+      if (token) {
+        session.user.id = token.id;
+      }
       return session;
-    },
+    }
+  },
+  pages: {
+    signIn: '/auth/signin',
   },
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt"
   }
-})
+}
+
+export default NextAuth(authOptions)
 

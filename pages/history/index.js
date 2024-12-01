@@ -1,20 +1,34 @@
 import { useEffect, useState } from "react";
 import styles from "./history.module.css";
 import { getAllDestinations } from "@/helper/api-util";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+
 
 export default function HistoryPage() {
+  const { data: session } = useSession();
+  const router = useRouter();
+
+  if(!session){
+    router.push('/auth/signin')
+  }
   const [history, setHistory] = useState([]);
   const [destinations, setDestinations] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  
+  const filterHistory = (bookings) => {
+      return bookings.filter(booking => booking.userId === session?.user?.id)
+    }
   useEffect(() => {
     const fetchData = async () => {
       try {
         // Fetch booking data
         const bookingResponse = await fetch('/api/booking');
         const bookingData = await bookingResponse.json();
-        setHistory(bookingData.data);
+        const result = filterHistory(bookingData.data)
+        setHistory(result);
 
+      
         // Fetch destination data
         const dest = await getAllDestinations();
         setDestinations(dest);
